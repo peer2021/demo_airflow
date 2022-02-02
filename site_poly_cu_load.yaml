@@ -5,6 +5,7 @@ metadata:
   namespace: data-engineering
 spec:
   sparkConf:
+    spark.mapr.user.secret: spark-user-secret
     spark.hadoop.fs.dtap.impl: com.bluedata.hadoop.bdfs.Bdfs
     spark.hadoop.fs.AbstractFileSystem.dtap.impl: com.bluedata.hadoop.bdfs.BdAbstractFS
     spark.hadoop.fs.dtap.impl.disable.cache: 'false'
