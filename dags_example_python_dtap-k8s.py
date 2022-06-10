@@ -27,7 +27,7 @@ dag = DAG(
 
 start = DummyOperator(task_id='run_this_first', dag=dag)
 
-python_task = KubernetesPodOperator(namespace='c360-project',
+python_task = KubernetesPodOperator(namespace='test',
                                     image="devuser2021/sample-docker:latest",
                                     cmds=["python", "test.py" "-c"],
                                     labels={"hpecp.hpe.com/dtap": "hadoop2"},
