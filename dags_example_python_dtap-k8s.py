@@ -30,7 +30,7 @@ start = DummyOperator(task_id='run_this_first', dag=dag)
 python_task = KubernetesPodOperator(namespace='test',
                                     image="devuser2021/sample-docker:latest",
                                     cmds=["python3", "test.py" ,"-c"],
-                                    labels={"hpecp.hpe.com/dtap": "hadoop2"},
+                                    labels={"hpecp.hpe.com/dtap": "hadoop2","hpecp.hpe.com/fsmount: test"},
                                     resources={'limit_memory': "4Gi", 'limit_cpu': "500m"},
                                     name="passing-python",
                                     in_cluster=True,
