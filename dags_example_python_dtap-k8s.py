@@ -26,19 +26,28 @@ dag = DAG(
 
 start = DummyOperator(task_id='run_this_first', dag=dag)
 
+#python_task = KubernetesPodOperator(namespace='test',
+#                                    image="devuser2021/sample-docker:latest",
+#                                    cmds=["python3", "/bd-fs-mnt/TenantShare/repo/code/test.py" ,"-c"],
+#                                    labels={"hpecp.hpe.com/dtap": "hadoop2","hpecp.hpe.com/fsmount": "test"},
+#                                    full_pod_spec={"restartPolicy": "Never","shareProcessNamespace": "true"},
+#                                    resources={'limit_memory': "4Gi", 'limit_cpu': "500m"},
+#                                    name="passing-python",
+#                                    in_cluster=True,
+#                                    is_delete_operator_pod=True,
+#                                    task_id="passing-task-python",
+#                                    get_logs=True,
+#                                    dag=dag
+#                                   )
+
+
 python_task = KubernetesPodOperator(namespace='test',
-                                    image="devuser2021/sample-docker:latest",
-                                    cmds=["python3", "/bd-fs-mnt/TenantShare/repo/code/test.py" ,"-c"],
-                                    labels={"hpecp.hpe.com/dtap": "hadoop2","hpecp.hpe.com/fsmount": "test"},
-                                    full_pod_spec={"restartPolicy": "Never","shareProcessNamespace": "true"},
-                                    resources={'limit_memory': "4Gi", 'limit_cpu': "500m"},
                                     name="passing-python",
                                     in_cluster=True,
                                     is_delete_operator_pod=True,
                                     task_id="passing-task-python",
                                     get_logs=True,
+                                    pod_template_file="test.yaml",
                                     dag=dag
-                                    )
-
-
+                                   )
 python_task.set_upstream(start)
