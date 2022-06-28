@@ -10,7 +10,7 @@ spec:
   restartPolicy: Never
   shareProcessNamespace: true
   containers:
-  - name: app
+  - name: base
     image: devuser2021/sample-docker:latest
     command: ["python3"]
     args: ["/bd-fs-mnt/project_repo/code/test.py"]
