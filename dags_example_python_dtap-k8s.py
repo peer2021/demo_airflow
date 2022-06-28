@@ -54,7 +54,7 @@ python_task = KubernetesPodOperator(namespace='test',
                                     task_id="passing-task-python",
                                     get_logs=True,
                                     full_pod_spec=full_pod_spec,
-                                    pod_template_file="/opt/airflow/dags/test.yaml",
+                                    pod_template_file="test.yaml",
                                     dag=dag
                                    )
 python_task.set_upstream(start)
