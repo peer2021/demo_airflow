@@ -4,7 +4,8 @@ from airflow import DAG
 from airflow.providers.cncf.kubernetes.operators.kubernetes_pod import KubernetesPodOperator
 from airflow.operators.dummy_operator import DummyOperator
 from datetime import datetime, timedelta
-
+from kubernetes.client import models as k8s
+import uuid
 
 # log = logging.getLogger(__name__)
 
@@ -40,6 +41,11 @@ start = DummyOperator(task_id='run_this_first', dag=dag)
 #                                    dag=dag
 #                                   )
 
+meta_name = 'k8s-pod-' + uuid.uuid4().hex
+metadata = k8s.V1ObjectMeta(name=(meta_name))
+full_pod_spec = k8s.V1Pod(
+    metadata=metadata,
+  )
 
 python_task = KubernetesPodOperator(namespace='test',
                                     name="passing-python",
@@ -47,6 +53,7 @@ python_task = KubernetesPodOperator(namespace='test',
                                     is_delete_operator_pod=True,
                                     task_id="passing-task-python",
                                     get_logs=True,
+                                    full_pod_spec=full_pod_spec,
                                     pod_template_file="/opt/airflow/dags/test.yaml",
                                     dag=dag
                                    )
