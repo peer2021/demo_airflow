@@ -1,11 +1,11 @@
 apiVersion: v1
 kind: Pod
 metadata:
-  name: demo
-  namespace: mlops-dataiku
+  name: k8spod-
+  namespace: test
   labels:
      hpecp.hpe.com/dtap: hadoop2
-     hpecp.hpe.com/fsmount: mlops-dataiku
+     hpecp.hpe.com/fsmount: test
 spec:
   restartPolicy: Never
   shareProcessNamespace: true
@@ -13,7 +13,7 @@ spec:
   - name: app
     image: devuser2021/sample-docker:latest
     command: ["python3"]
-    args: ["/bd-fs-mnt/TenantShare/repo/test/test1.py"]
+    args: ["/bd-fs-mnt/project_repo/code/test.py"]
     imagePullPolicy: Never
     resources:
       limits:
