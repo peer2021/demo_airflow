@@ -42,9 +42,9 @@ start = DummyOperator(task_id='run_this_first', dag=dag)
 #                                   )
 
 image = "devuser2021/sample-docker:latest"
-command = "python3"
+command = "[python3]"
 name ="app"
-args ="/bd-fs-mnt/project_repo/code/test.py"
+args ="[/bd-fs-mnt/project_repo/code/test.py]"
 image_pull_policy = "Never"
 
 resources=k8s.V1ResourceRequirements(limits={'cpu': '500m', 'memory':'4Gi'},requests={'cpu': '500m', 'memory':'4Gi'})
