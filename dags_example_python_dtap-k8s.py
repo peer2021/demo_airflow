@@ -41,11 +41,21 @@ start = DummyOperator(task_id='run_this_first', dag=dag)
 #                                    dag=dag
 #                                   )
 
+image = "devuser2021/sample-docker:latest"
+command = "python3"
+name ="app"
+args ="/bd-fs-mnt/project_repo/code/test.py"
+image_pull_policy = "Never"
+
+resources=k8s.V1ResourceRequirements(limits={'cpu': '500m', 'memory':'4Gi'},requests={'cpu': '500m', 'memory':'4Gi'})
+
 meta_name = 'k8s-pod-' + uuid.uuid4().hex
-metadata = k8s.V1ObjectMeta(name=(meta_name))
-full_pod_spec = k8s.V1Pod(
-    metadata=metadata,
-  )
+metadata = k8s.V1ObjectMeta(name=(meta_name),namespace="test", labels={"hpecp.hpe.com/dtap": "hadoop2","hpecp.hpe.com/fsmount": "test"})
+
+container=k8s.V1Container(image=image, command=command, name=name, args=args,image_pull_policy=image_pull_policy,resources=resources)
+spec=k8s.V1PodSpec(restart_policy="Never" , share_process_namespace = "true" , containers=[container])                
+full_pod_spec = k8s.V1Pod( api_version ="v1",kind ="Pod", metadata=metadata, spec = spec)
+
 
 python_task = KubernetesPodOperator(namespace='test',
                                     name="passing-python",
@@ -54,7 +64,6 @@ python_task = KubernetesPodOperator(namespace='test',
                                     task_id="passing-task-python",
                                     get_logs=True,
                                     full_pod_spec=full_pod_spec,
-                                    pod_template_file="test.yaml",
                                     dag=dag
                                    )
 python_task.set_upstream(start)
