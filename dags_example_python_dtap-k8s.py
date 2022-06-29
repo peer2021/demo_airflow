@@ -54,8 +54,8 @@ metadata = k8s.V1ObjectMeta(name=(meta_name),namespace="test", labels={"hpecp.hp
 
 container=k8s.V1Container(image=image, command=command, name=name, args=args,image_pull_policy=image_pull_policy,resources=resources)
 spec=k8s.V1PodSpec(restart_policy="Never" , share_process_namespace = "true" , containers=[container])                
-full_pod_spec = k8s.V1Pod( api_version ="v1",kind ="Pod", metadata=metadata, spec = spec)
-
+#full_pod_spec = k8s.V1Pod( api_version ="v1",kind ="Pod", metadata=metadata, spec = spec)
+full_pod_spec = k8s.V1Pod( metadata=metadata, spec = spec)
 
 python_task = KubernetesPodOperator(namespace='test',
                                     name="passing-python",
